@@ -397,8 +397,6 @@ class USBPixI4ConverterPlugin : public DataConverterPlugin , public USBPixI4Conv
 		
 		++(this->dataBlocksProcessed);
 		
-		std::cout << "Block: " << (this->dataBlocksProcessed%(this->dataBlocksPerEvent)) << std::endl;
-		
 		if(ev.IsBORE() || ev.IsEORE()) {
 			return true;
 		}
@@ -424,7 +422,6 @@ class USBPixI4ConverterPlugin : public DataConverterPlugin , public USBPixI4Conv
 	
 	virtual bool GetLCIOSubEvent(lcio::LCEvent & lcioEvent, const Event & eudaqEvent) const {		
 		++(this->dataBlocksProcessed);
-		std::cout << "Block: " << (this->dataBlocksProcessed%(this->dataBlocksPerEvent)) << std::endl;
         
 		if(eudaqEvent.IsBORE() || eudaqEvent.IsEORE()) {
 			return true;
