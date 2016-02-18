@@ -23,6 +23,8 @@
 # Clang: http://clang.llvm.org/cxx_status.html
 # GCC: http://gcc.gnu.org/projects/cxx0x.html
 # MSVC: http://msdn.microsoft.com/en-us/en-us/library/hh567368.aspx
+include(CheckCXXCompilerFlag)
+
 macro(check_for_cxx11_compiler _VAR)
     message(STATUS "Checking for C++11 compliance of compiler")
     set(${_VAR})
@@ -49,13 +51,13 @@ macro(enable_cxx11)
     include(TestCXXAcceptsFlag)
 
     # try to use compiler flag -std=c++11
-    check_cxx_accepts_flag("-std=c++11" CXX_FLAG_CXX11)
+    SET(CXX_FLAG_CXX11 1)
 
     if(CXX_FLAG_CXX11)
       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
     else(CXX_FLAG_CXX11)
       # try to use compiler flag -std=c++0x for older compilers
-      check_cxx_accepts_flag("-std=c++0x" CXX_FLAG_CXX0X)
+      CHECK_CXX_COMPILER_FLAG("-std=c++0x" CXX_FLAG_CXX0X)
       if(CXX_FLAG_CXX0X)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
       else(CXX_FLAG_CXX0X)
@@ -65,7 +67,7 @@ macro(enable_cxx11)
     
     # and clang needs additional flags
     if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-      check_cxx_accepts_flag("-stdlib=libc++" CXX_FLAG_LIBCXX)
+      CHECK_CXX_COMPILER_FLAG("-stdlib=libc++" CXX_FLAG_LIBCXX)
       IF(CXX_FLAG_LIBCXX)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
       ENDIF(CXX_FLAG_LIBCXX)
