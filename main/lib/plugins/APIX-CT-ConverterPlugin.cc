@@ -286,7 +286,7 @@ namespace eudaq {
 	      int lvl1=hits[i].lv1;
 	      int ToT=hits[i].tot;
 	      eutelescope::EUTelGenericSparsePixel *thisHit = new eutelescope::EUTelGenericSparsePixel( col, row, ToT, lvl1);
-	      sparseFrame->addSparsePixel( thisHit );
+	      sparseFrame->addSparsePixel( *thisHit );
 	      tmphits.push_back( thisHit );
 	      /*
 	      //ganged pixels bottom
@@ -421,7 +421,7 @@ namespace eudaq {
 		int col = hits[i].col;
 		int row = hits[i].row;
 		eutelescope::EUTelGenericSparsePixel *thisHit = new eutelescope::EUTelGenericSparsePixel( col, row, hits[i].tot, hits[i].lv1);
-		sparseFrame->addSparsePixel( thisHit );
+		sparseFrame->addSparsePixel( *thisHit );
 		tmphits.push_back( thisHit );
 	      }
 	      //int col=(1+m_fepos[hits[i].link])*NCOL-1-hits[i].col; //left or right on 2-chip module

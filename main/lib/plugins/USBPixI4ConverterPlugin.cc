@@ -557,7 +557,7 @@ class USBPixI4ConverterPlugin : public DataConverterPlugin , public USBPixI4Conv
 					{
 						if(this->advancedConfig) this->transformChipsToModule(Col, Row, this->moduleIndex.at(chip));
 						eutelescope::EUTelGenericSparsePixel* thisHit = new eutelescope::EUTelGenericSparsePixel( Col, Row, ToT, lvl1-1);
-						sparseFrame->addSparsePixel( thisHit );
+						sparseFrame->addSparsePixel( *thisHit );
 						tmphits.push_back( thisHit );
 					}
 					//Second Hit
@@ -565,7 +565,7 @@ class USBPixI4ConverterPlugin : public DataConverterPlugin , public USBPixI4Conv
 					{
 						if(this->advancedConfig) this->transformChipsToModule(Col, Row, this->moduleIndex.at(chip));
 						eutelescope::EUTelGenericSparsePixel* thisHit = new eutelescope::EUTelGenericSparsePixel( Col, Row, ToT, lvl1-1);
-						sparseFrame->addSparsePixel( thisHit );
+						sparseFrame->addSparsePixel( *thisHit );
 						tmphits.push_back( thisHit );
 					}
 				}
