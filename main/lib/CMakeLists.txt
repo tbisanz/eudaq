@@ -2,7 +2,7 @@ option(USE_ROOT "Compiling main library using ROOT" OFF)
 if (USE_ROOT)
    FIND_PACKAGE( ROOT REQUIRED )
 else (USE_ROOT)
-   FIND_PACKAGE( ROOT REQUIRED )
+   FIND_PACKAGE( ROOT )
 endif (USE_ROOT)
 
 if (ROOT_FOUND)
@@ -11,8 +11,17 @@ if (ROOT_FOUND)
   ADD_DEFINITIONS(-DROOT_FOUND)
 endif (ROOT_FOUND)
 
+option(USE_LCIO "Compiling main library using LCIO" OFF)
+IF(USE_LCIO)
+  FIND_PACKAGE(LCIO REQUIRED)
+  INCLUDE_DIRECTORIES(${LCIO_INCLUDE_DIRS})
+  SET(ADDITIONAL_LIBRARIES ${ADDITIONAL_LIBRARIES} ${LCIO_LIBRARIES} )
+  add_definitions(${LCIO_DEFINITIONS})
+ENDIF(USE_LCIO)
+
 AUX_SOURCE_DIRECTORY( src library_sources )
 AUX_SOURCE_DIRECTORY( plugins plugins_sources )
+AUX_SOURCE_DIRECTORY( processors processors_sources )
 
 option(USE_TINYXML "Compiling main library using TinyXML" OFF)
 if (USE_TINYXML OR BUILD_palpidefs)
@@ -55,7 +64,7 @@ if (PROTOBUF_FOUND AND GEN_proto)
 
 endif()
 
-ADD_LIBRARY( ${PROJECT_NAME} SHARED ${library_sources} ${plugins_sources})
+ADD_LIBRARY( ${PROJECT_NAME} SHARED ${library_sources} ${plugins_sources} ${processors_sources}) 
 
 if (PROTOBUF_FOUND AND GEN_proto)
     add_dependencies(${PROJECT_NAME} GEN_PROTO)   
@@ -67,6 +76,7 @@ SOURCE_GROUP(TCPIP .*Transport.*cc)
 SOURCE_GROUP(TCPIP FILES src\\Serializable.cc src\\Producer.cc src\\CommandReceiver.cc src\\DataCollector.cc src\\DataSender.cc  src\\LogCollector.cc)
 SOURCE_GROUP(Event .*Event.*cc)
 SOURCE_GROUP(Utilities FILES src\\Utils.cc src\\Time.cc src\\Mutex.cc src\\EudaqThread.cc)
+SOURCE_GROUP(processors FILES ${processors_sources})
 
 target_link_libraries( ${PROJECT_NAME} ${EUDAQ_THREADS_LIB} ${ADDITIONAL_LIBRARIES})
 

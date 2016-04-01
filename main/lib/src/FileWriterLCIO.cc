@@ -13,8 +13,11 @@
 #include "lcio.h"
 
 #include <iostream>
+
+#if USE_EUTELESCOPE
 #include "EUTelEventImpl.h"
 #include "EUTELESCOPE.h"
+#endif //USE_EUTELESCOPE
 
 namespace eudaq {
 
@@ -32,9 +35,8 @@ namespace eudaq {
         m_fileopened; /// We have to keep track whether a file is open ourselves
   };
 
-  namespace {
-    static RegisterFileWriter<FileWriterLCIO> reg("lcio");
-  }
+
+  registerFileWriter(FileWriterLCIO, "lcio");
 
   FileWriterLCIO::FileWriterLCIO(const std::string & /*param*/)
       : m_lcwriter(lcio::LCFactory::getInstance()
@@ -72,7 +74,7 @@ namespace eudaq {
 
       return;
     } else if (devent.IsEORE()) {
-
+#if USE_EUTELESCOPE
       std::cout << "Found a EORE, so adding an EORE to the LCIO file as well"
                 << std::endl;
       auto lcioEvent = std::unique_ptr<eutelescope::EUTelEventImpl>(
@@ -84,23 +86,16 @@ namespace eudaq {
 
       // sent the lcioEvent to the processor manager for further processing
       m_lcwriter->writeEvent(lcioEvent.get());
+#endif //USE_EUTELESCOPE
       return;
     }
-    //  std::cout << "EUDAQ_DEBUG: FileWriterLCIO::WriteEvent() processing event
-    //  "
-    //    <<  devent.GetRunNumber () <<"." << devent.GetEventNumber () <<
-    //    std::endl;
 
     auto lcevent =
         std::unique_ptr<lcio::LCEvent>(PluginManager::ConvertToLCIO(devent));
 
     // only write non-empty events
-    // std::cout << lcevent->getDetectorName() << std::endl;
     if (!lcevent->getCollectionNames()->empty()) {
-      //  std::cout << " FileWriterLCIO::WriteEvent() : doing the actual writing
-      //  : " <<std::flush;
       m_lcwriter->writeEvent(lcevent.get());
-      //  std::cout << " done" <<std::endl;
     }
   }
 

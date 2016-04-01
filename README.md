@@ -1,5 +1,8 @@
-eudaq [![Build Status](https://travis-ci.org/eudaq/eudaq.svg?branch=v1.4-dev)](https://travis-ci.org/eudaq/eudaq)
+eudaq 
 =====
+
+[![Build Status](https://travis-ci.org/eudaq/eudaq.svg?branch=master)](https://travis-ci.org/eudaq/eudaq)
+[![Build status](https://ci.appveyor.com/api/projects/status/n3tq45kkupyvjihg?svg=true)](https://ci.appveyor.com/project/simonspa/eudaq)
 
 A Generic Multi-platform Data Acquisition Framework
 
@@ -94,11 +97,12 @@ Install Qt4 or later, e.g. by using MacPorts (http://www.macports.org/): ```sudo
 #### Windows
 install libusb (download from http://sourceforge.net/projects/libusb-win32/files/libusb-win32-releases/, for documentation see http://sourceforge.net/apps/trac/libusb-win32/wiki) into ./extern/libusb-w32
 #### Linux
-install libusb development package, e.g. ```apt-get install libusb-dev```
+- install libusb package, e.g. in Ubuntu ```apt-get install libusb-dev```
+- maybe you have to add this udev-rule to /lib/udev/rules.d/ as root: https://github.com/eudaq/eudaq/blob/master/etc/usb_device_permissions/54-tlu.rules
 
 ### Online Monitor
 --------------------
-- requires ROOT (download from http://root.cern.ch/drupal/content/downloading-root)
+- requires ROOT (download from http://root.cern.ch/drupal/content/downloading-root) with the `-lPhysics` library compiled
 - (Windows) Make sure that you have installed the corresponding version of MSVC with which your downloaded ROOT binaries have been compiled!
 
 
